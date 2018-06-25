@@ -60,6 +60,11 @@ namespace PresentationApp
             return false;
         }
 
+        public int currentPage()
+        {
+            return slide.SlideIndex;
+        }
+
         public void first()
         {
             try
@@ -142,6 +147,36 @@ namespace PresentationApp
             {
                 logger.Warn("it's first page");
 
+            }
+        }
+
+        public void play()
+        {
+            int index = slide.SlideIndex;
+            logger.Debug(">>>play: current page = " + index);
+            presentation.SlideShowSettings.Run();
+            goToPage(index);
+        }
+
+        public void goToPage(int page)
+        {
+            slideIndex = page;
+            if (slideIndex > slidescount)
+            {
+                logger.Warn("it's last page");
+            }
+            else
+            {
+                try
+                {
+                    slide = slides[slideIndex];
+                    slides[slideIndex].Select();
+                }
+                catch
+                {
+                    pptApplication.SlideShowWindows[1].View.Next();
+                    slide = pptApplication.SlideShowWindows[1].View.Slide;
+                }
             }
         }
     }

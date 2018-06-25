@@ -136,7 +136,7 @@ namespace PresentationApp
 
         private void server_NewMessageReceived(WebSocketSession session, string message)
         {
-            Console.WriteLine("Client said: " + message);
+           logger.Debug("Client said: " + message);
             try
             {
                 dynamic msg = Newtonsoft.Json.Linq.JObject.Parse(message);
@@ -157,6 +157,7 @@ namespace PresentationApp
 
                         res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
                         res.message = "OK";
+                        res.page = control.currentPage(OFFICE_TYPE.POWERPOINT);
                     }
                     else
                     {
@@ -174,6 +175,8 @@ namespace PresentationApp
                         control.previous(OFFICE_TYPE.POWERPOINT);
                         res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
                         res.message = "OK";
+                        res.page = control.currentPage(OFFICE_TYPE.POWERPOINT);
+
                     }
                     else
                     {
@@ -190,6 +193,8 @@ namespace PresentationApp
                         control.first(OFFICE_TYPE.POWERPOINT);
                         res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
                         res.message = "OK";
+                        res.page = control.currentPage(OFFICE_TYPE.POWERPOINT);
+
                     }
                     else
                     {
@@ -206,6 +211,42 @@ namespace PresentationApp
                         control.last(OFFICE_TYPE.POWERPOINT);
                         res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
                         res.message = "OK";
+                        res.page = control.currentPage(OFFICE_TYPE.POWERPOINT);
+
+                    }
+                    else
+                    {
+                        res.code = (int)MsgResponse.RESULT_CODE.NOT_FOUND;
+                        res.message = "Fail";
+                    }
+
+                    session.Send(JsonConvert.SerializeObject(res));
+                }
+                else if (intent == "get_page")
+                {
+                    if (control.checkPowerpoint())
+                    {
+                        res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
+                        res.message = "OK";
+                        res.page = control.currentPage(OFFICE_TYPE.POWERPOINT);
+
+                    }
+                    else
+                    {
+                        res.code = (int)MsgResponse.RESULT_CODE.NOT_FOUND;
+                        res.message = "Fail";
+                    }
+
+                    session.Send(JsonConvert.SerializeObject(res));
+                }
+                else if (intent == "play")
+                {
+                    if (control.checkPowerpoint())
+                    {
+                        control.play(OFFICE_TYPE.POWERPOINT);
+                        res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
+                        res.message = "OK";
+
                     }
                     else
                     {

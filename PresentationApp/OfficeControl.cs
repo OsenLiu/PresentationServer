@@ -110,5 +110,31 @@ namespace PresentationApp
                 throw;
             }
         }
+
+        public int currentPage(OFFICE_TYPE type)
+        {
+            try
+            {
+                OfficeWindow window = getWindow(type);
+                return window.currentPage();
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void play(OFFICE_TYPE type)
+        {
+            try
+            {
+                OfficeWindow window = getWindow(type);
+                window.play();
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
