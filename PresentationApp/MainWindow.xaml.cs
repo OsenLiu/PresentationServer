@@ -256,6 +256,24 @@ namespace PresentationApp
 
                     session.Send(JsonConvert.SerializeObject(res));
                 }
+
+                else if (intent == "stop_play")
+                {
+                    if (control.checkPowerpoint())
+                    {
+                        control.stopRun(OFFICE_TYPE.POWERPOINT);
+                        res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
+                        res.message = "OK";
+
+                    }
+                    else
+                    {
+                        res.code = (int)MsgResponse.RESULT_CODE.NOT_FOUND;
+                        res.message = "Fail";
+                    }
+
+                    session.Send(JsonConvert.SerializeObject(res));
+                }
             }
             catch (Exception ex)
             {

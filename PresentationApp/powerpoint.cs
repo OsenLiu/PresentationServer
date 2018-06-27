@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using Microsoft.Office.Interop.PowerPoint;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -154,8 +155,8 @@ namespace PresentationApp
         {
             int index = slide.SlideIndex;
             logger.Debug(">>>play: current page = " + index);
+
             presentation.SlideShowSettings.Run();
-            goToPage(index);
         }
 
         public void goToPage(int page)
@@ -178,6 +179,11 @@ namespace PresentationApp
                     slide = pptApplication.SlideShowWindows[1].View.Slide;
                 }
             }
+        }
+
+        public void stop()
+        {
+            
         }
     }
 }

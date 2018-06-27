@@ -136,5 +136,18 @@ namespace PresentationApp
                 throw;
             }
         }
+
+        public void stopRun(OFFICE_TYPE type)
+        {
+            try
+            {
+                OfficeWindow window = getWindow(type);
+                window.stop();
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

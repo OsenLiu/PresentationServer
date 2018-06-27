@@ -20,6 +20,7 @@ namespace PresentationApp
         void last();
         int currentPage();
         void play();
+        void stop();
 
         OFFICE_TYPE getType();
     }
