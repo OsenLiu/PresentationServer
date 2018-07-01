@@ -117,6 +117,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CmdServer.cs" />
+    <Compile Include="DrawWindow.xaml.cs">
+      <DependentUpon>DrawWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Message.cs" />
     <Compile Include="MsgResponse.cs" />
     <Compile Include="OfficeControl.cs" />
@@ -125,6 +128,10 @@
     <Compile Include="Powerpoint.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="Session.cs" />
+    <Page Include="DrawWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

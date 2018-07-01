@@ -149,5 +149,44 @@ namespace PresentationApp
                 throw;
             }
         }
+
+        public void enableLaserPen(OFFICE_TYPE type, bool isEnable)
+        {
+            try
+            {
+                OfficeWindow window = getWindow(type);
+                window.enableLaserPen(isEnable);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void enableColorPen(OFFICE_TYPE type, bool isEnable)
+        {
+            try
+            {
+                OfficeWindow window = getWindow(type);
+                window.enableColorPen(isEnable);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public void marker(OFFICE_TYPE type)
+        {
+            try
+            {
+                OfficeWindow window = getWindow(type);
+                window.marker();
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }

@@ -274,7 +274,61 @@ namespace PresentationApp
 
                     session.Send(JsonConvert.SerializeObject(res));
                 }
+                else if (intent == "enable_laser")
+                {
+                    if (control.checkPowerpoint())
+                    {
+                        bool isEnable = msg.isLaser;
+                        control.enableLaserPen(OFFICE_TYPE.POWERPOINT, isEnable);
+                        res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
+                        res.message = "OK";
+
+                    }
+                    else
+                    {
+                        res.code = (int)MsgResponse.RESULT_CODE.NOT_FOUND;
+                        res.message = "Fail";
+                    }
+
+                    session.Send(JsonConvert.SerializeObject(res));
+                }
+                else if (intent == "enable_color_pen")
+                {
+                    if (control.checkPowerpoint())
+                    {
+                        bool isEnable = msg.isLaser;
+                        control.enableColorPen(OFFICE_TYPE.POWERPOINT, isEnable);
+                        res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
+                        res.message = "OK";
+
+                    }
+                    else
+                    {
+                        res.code = (int)MsgResponse.RESULT_CODE.NOT_FOUND;
+                        res.message = "Fail";
+                    }
+
+                    session.Send(JsonConvert.SerializeObject(res));
+                }
+                else if (intent == "marker")
+                {
+                    if (control.checkPowerpoint())
+                    {
+                        control.marker(OFFICE_TYPE.POWERPOINT);
+                        res.code = (int)MsgResponse.RESULT_CODE.SUCCESS;
+                        res.message = "OK";
+
+                    }
+                    else
+                    {
+                        res.code = (int)MsgResponse.RESULT_CODE.NOT_FOUND;
+                        res.message = "Fail";
+                    }
+
+                    session.Send(JsonConvert.SerializeObject(res));
+                }
             }
+
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());

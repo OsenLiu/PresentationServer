@@ -21,6 +21,9 @@ namespace PresentationApp
         int currentPage();
         void play();
         void stop();
+        void enableLaserPen(bool isEnable);
+        void enableColorPen(bool isEnable);
+        void marker();
 
         OFFICE_TYPE getType();
     }

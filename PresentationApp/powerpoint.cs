@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using PPt = Microsoft.Office.Interop.PowerPoint;
@@ -51,6 +52,8 @@ namespace PresentationApp
                         // Get selected slide object in reading view
                         slide = pptApplication.SlideShowWindows[1].View.Slide;
                     }
+
+                    pptApplication.SlideShowNextSlide += PptApplication_SlideShowNextSlide;
                 }
                 return true;
             }
@@ -60,6 +63,27 @@ namespace PresentationApp
             }
             return false;
         }
+
+        private void PptApplication_SlideShowNextSlide(SlideShowWindow Wn)
+        {
+            logger.Info(">>>PptApplication_SlideShowNextSlide: " + Wn.View.Slide.SlideIndex);
+            Thread.Sleep(10);
+            Wn.
+        }
+
+        private void captureWindow()
+        {
+            Rectangle bounds = this.Bounds;
+            using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+            {
+                using (Graphics g = Graphics.FromImage(bitmap))
+                {
+                    g.CopyFromScreen(new Point(bounds.Left, bounds.Top), Point.Empty, bounds.Size);
+                }
+                bitmap.Save("C://test.jpg", ImageFormat.Jpeg);
+            }
+        }
+
 
         public int currentPage()
         {
@@ -185,5 +209,61 @@ namespace PresentationApp
         {
             
         }
+
+        public void enableLaserPen(bool isEnable)
+        {
+            try
+            {
+                ((dynamic)presentation.SlideShowWindow.View).LaserPointerEnabled = isEnable;
+            }
+            catch
+            {
+                ((dynamic)pptApplication.SlideShowWindows[1].View).LaserPointerEnabled = isEnable;
+            }
+        }
+
+        public void enableColorPen(bool isEnable)
+        {
+            SlideShowView pView;
+            try
+            {
+                pView = presentation.SlideShowWindow.View;
+                
+            }
+            catch
+            {
+                pView = pptApplication.SlideShowWindows[1].View;
+                
+            }
+            if (isEnable)
+            {
+                pView.PointerType = PpSlideShowPointerType.ppSlideShowPointerPen;
+            }
+            else
+            {
+                pView.PointerType = PpSlideShowPointerType.ppSlideShowPointerNone;
+            }
+        }
+
+        public void marker()
+        {
+            try
+            {
+                slide = slides[slideIndex];
+            }
+            catch
+            {
+                slide = pptApplication.SlideShowWindows[1].View.Slide;
+            }
+            
+            Shape shape = slide.Shapes.AddLine(10, 10, 30, 30);
+            shape.Line.Weight = 10;
+            shape.Line.ForeColor.RGB = 65535;
+            shape.Line.Transparency = 0.8f;
+        }
+
+        
     }
+
+
 }
