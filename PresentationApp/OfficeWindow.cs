@@ -10,6 +10,8 @@ namespace PresentationApp
     {
         POWERPOINT
     }
+    public delegate void SlideShowNextSlideEventHandler(int index);
+
     interface OfficeWindow
     {
         bool checkActivateWindow();
@@ -24,6 +26,9 @@ namespace PresentationApp
         void enableLaserPen(bool isEnable);
         void enableColorPen(bool isEnable);
         void marker();
+
+        event SlideShowNextSlideEventHandler onSlideIndexChanged;
+
 
         OFFICE_TYPE getType();
     }

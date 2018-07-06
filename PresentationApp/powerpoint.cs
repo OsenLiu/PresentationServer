@@ -2,6 +2,7 @@
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -26,6 +27,8 @@ namespace PresentationApp
         int slidescount;
         // slide index
         int slideIndex;
+
+        public event SlideShowNextSlideEventHandler onSlideIndexChanged;
 
         public bool checkActivateWindow()
         {
@@ -52,8 +55,9 @@ namespace PresentationApp
                         // Get selected slide object in reading view
                         slide = pptApplication.SlideShowWindows[1].View.Slide;
                     }
-
-                    pptApplication.SlideShowNextSlide += PptApplication_SlideShowNextSlide;
+                    pptApplication.SlideShowNextSlide += new EApplication_SlideShowNextSlideEventHandler(PptApplication_SlideShowNextSlide);
+                    //pptApplication.SlideSelectionChanged += PptApplication_SlideSelectionChanged;
+                    //pptApplication.SlideShowOnNext += PptApplication_SlideShowOnNext;
                 }
                 return true;
             }
@@ -68,11 +72,29 @@ namespace PresentationApp
         {
             logger.Info(">>>PptApplication_SlideShowNextSlide: " + Wn.View.Slide.SlideIndex);
             Thread.Sleep(10);
-            Wn.
+            onSlideIndexChanged(Wn.View.Slide.SlideIndex);
         }
 
-        private void captureWindow()
+        private void PptApplication_SlideSelectionChanged(SlideRange SldRange)
         {
+            logger.Info(">>>PptApplication_SlideShowNextSlide: " + SldRange.SlideIndex);
+            Thread.Sleep(10);
+        }
+
+        private void PptApplication_SlideShowOnNext(SlideShowWindow Wn)
+        {
+            logger.Info(">>>PptApplication_SlideShowOnNext: " + Wn.View.Slide.SlideIndex);
+            Thread.Sleep(10);
+        }
+
+        public async void startCapture()
+        {
+            String path = await captureWindow();
+        }
+
+        public async Task<string> captureWindow()
+        {
+            /*
             Rectangle bounds = this.Bounds;
             using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
             {
@@ -82,6 +104,16 @@ namespace PresentationApp
                 }
                 bitmap.Save("C://test.jpg", ImageFormat.Jpeg);
             }
+            */
+            if(slide== null)
+            {
+                return null;
+            }
+            String destDir = Path.GetTempPath();
+            String dest = Path.Combine(destDir, slide.SlideIndex + ".png");
+            slide.Export(dest, "png", 320, 240);
+            logger.Debug("save ppt into " + dest);
+            return dest;
         }
 
 

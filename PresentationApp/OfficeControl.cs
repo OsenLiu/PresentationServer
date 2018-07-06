@@ -21,7 +21,8 @@ namespace PresentationApp
             controls.Add(new Powerpoint());
         }
 
-        private OfficeWindow getWindow(OFFICE_TYPE type)
+
+        public OfficeWindow getWindow(OFFICE_TYPE type)
         {
             foreach (OfficeWindow window in controls)
             {

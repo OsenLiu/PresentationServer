@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
+using PresentationApp.Message;
 using SuperSocket.SocketBase;
 using SuperSocket.SocketBase.Config;
 using SuperSocket.WebSocket;
@@ -53,8 +54,9 @@ namespace PresentationApp
 
 
             control = new OfficeControl();
-
+            control.getWindow(OFFICE_TYPE.POWERPOINT).onSlideIndexChanged += onSlideChanged;
             initView();
+            control.checkPowerpoint();
 
         }
 
@@ -121,7 +123,7 @@ namespace PresentationApp
             Dispatcher.BeginInvoke(new Action(() => {
                 this.WindowState = WindowState.Minimized;
             }));
-            
+            apps.Add(session);
         }
 
         private void server_SessionClosed(WebSocketSession session, SuperSocket.SocketBase.CloseReason value)
@@ -147,7 +149,7 @@ namespace PresentationApp
                 }
                 String intent = msg.Intent;
                 MsgResponse res = new MsgResponse();
-
+                res.Intent = intent;
                 if (intent == "page_down")
                 {
                     logger.Debug("page down");
@@ -335,5 +337,18 @@ namespace PresentationApp
             }
 
         }
+
+        public void onSlideChanged(int index)
+        {
+            logger.Debug(">>>onSlideChanged: " + index);
+            PageEvent pe = new PageEvent();
+            pe.page = index;
+            foreach(Session s in apps)
+            {
+                s.Send(JsonConvert.SerializeObject(pe));
+            }
+        }
     }
+
+
 }
