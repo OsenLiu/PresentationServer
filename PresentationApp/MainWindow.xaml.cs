@@ -343,7 +343,7 @@ namespace PresentationApp
             logger.Debug(">>>onSlideChanged: " + index);
             PageEvent pe = new PageEvent();
             pe.page = index;
-            foreach(Session s in apps)
+            foreach(WebSocketSession s in apps)
             {
                 s.Send(JsonConvert.SerializeObject(pe));
             }
